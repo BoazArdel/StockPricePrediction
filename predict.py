@@ -3,12 +3,21 @@ import torch
 import torch.nn as nn
 import numpy as np
 import time
+import csv
 
+with open("AMZNtrain.csv") as fp:
+    reader = csv.reader(fp, delimiter=",", quotechar='"')
+    # next(reader, None)  # skip the headers
+    data = [row for row in reader]
+
+print(data[['close']])
 
 price = data[['Close']]
 scaler = MinMaxScaler(feature_range=(-1, 1))
 price['Close'] = scaler.fit_transform(price['Close'].values.reshape(-1,1))
 
+
+'''
 def split_data(stock, lookback):
     data_raw = stock.to_numpy() # convert to numpy array
     data = []
@@ -98,3 +107,5 @@ class GRU(nn.Module):
 model = GRU(input_dim=input_dim, hidden_dim=hidden_dim, output_dim=output_dim, num_layers=num_layers)
 criterion = torch.nn.MSELoss(reduction='mean')
 optimiser = torch.optim.Adam(model.parameters(), lr=0.01)
+
+'''
